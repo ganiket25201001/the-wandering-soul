@@ -1,6 +1,6 @@
 # The Wandering Soul — Aniket
 
-A solo travel portfolio that reads like a journal: warm paper, layered postcards, moving landscapes, and stories about the places you see and the things you feel.
+A solo travel portfolio that reads like a journal: a layered mountain hero, warm paper, postcards, moving landscapes, and stories about the places you see and the things you feel.
 
 [Visit the website](https://the-wandering-soul.vercel.app/)
 
@@ -8,6 +8,7 @@ A solo travel portfolio that reads like a journal: warm paper, layered postcards
 
 ## The experience
 
+- **The opening scene:** a reusable TypeScript parallax component with GSAP ScrollTrigger, separate landscape and foreground artwork, Aniket’s name, and SVG arrows. Desktop wheel smoothing uses Lenis; phones keep native touch scrolling. Reduced-motion mode keeps the hero static.
 - **Aniket’s Little World:** scroll through 12 scenic views across Mumbai, Jaisalmer, Kedarnath, and an imagined Karakoram dream chapter. Slow zoom, camera drift, and transitions create movement from local images; this is not generated video.
 - **Wish you were here:** tilted postcard covers open on the exact image clicked, followed by three photo-story moments for each destination. Photos remain uncropped, with a frosted, blurred version of the image filling the background.
 - **Through my eyes:** every moment pairs “What I saw” with “How it felt.” Browse with thumbnails, arrow buttons, keyboard arrows, or a horizontal swipe. Escape closes the viewer.
@@ -98,4 +99,10 @@ All runtime travel images are served locally. PNG originals accompany the journa
 - **Typography:** Manrope, DM Sans, and Caveat from Google Fonts, with system-font fallbacks.
 - **Icons:** Lucide.
 
-Built with React, Vite, CSS, and Canvas.
+Built with React, Vite, TypeScript, GSAP, Lenis, CSS, and Canvas.
+
+## Parallax component
+
+The adapted component lives in `src/components/ui/parallax-scrolling.tsx`, with its own adjacent CSS file. This keeps reusable interface components separate from page content. The site uses ordinary CSS; this component does not require a Tailwind or shadcn migration. Vite compiles its TSX, and `npm run typecheck` validates it. The production build runs TypeScript first.
+
+The supplied demo was adapted to local travel artwork, Lucide SVG icons, scoped GSAP cleanup, reduced-motion preferences, and modal-safe desktop scrolling. It uses the maintained `lenis` package rather than the older `@studio-freight/lenis` package name.
