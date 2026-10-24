@@ -2,6 +2,8 @@
 
 A React travel portfolio with a warm scrapbook design, mouse-driven CSS 3D depth, floating PNG postcards, scroll reveals, journal dialogs, and a visitor-selected next destination.
 
+The main journey is now a continuous scroll-controlled perspective world, implemented in React and Canvas. A camera advances through procedural city buildings, sandstone lanes, a temple-inspired mountain scene, and snowy peaks. This is a stylized interpretation, not an accurate reconstruction of the landmarks. It uses no paid video services, API keys, or external 3D libraries. Desktop and portrait layouts share the interactive scene with different compositions; no pre-rendered film is used. A pause button freezes camera movement, and reduced-motion mode shows local photo postcards instead of the animated canvas.
+
 ## Run
 
 Install Node.js, then run `npm install` and `npm run dev`. Create a production build with `npm run build`.
