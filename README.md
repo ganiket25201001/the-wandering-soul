@@ -1,32 +1,101 @@
-# Aniket — The Wandering Journal
+# The Wandering Soul — Aniket
 
-A React travel portfolio with a warm scrapbook design, mouse-driven CSS 3D depth, floating PNG postcards, scroll reveals, journal dialogs, and a visitor-selected next destination.
+A solo travel portfolio that reads like a journal: warm paper, layered postcards, moving landscapes, and stories about the places you see and the things you feel.
 
-The main journey is a scroll-controlled scenic sequence implemented in React and Canvas. Detailed local landscape images use a slow camera drift, zoom, light effects, and soft crossfades. Desktop and portrait layouts adapt the composition. This is image animation, not a video or a reconstruction of actual travel. It uses no paid video services or API keys. A pause button freezes camera movement, and reduced-motion mode shows local photo postcards instead of the animated canvas. Rendering pauses when the scene is offscreen or unchanged.
+[Visit the website](https://the-wandering-soul.vercel.app/)
 
-Clicking any postcard opens a keyboard-accessible photo-story dialog with three distinct views, thumbnails, previous/next controls, and a matching “What I saw” / “How it felt” passage for each photo. The viewer starts on the exact cover image clicked. Both the postcard covers and open photos preserve the full image without cropping. A blurred duplicate of the current photo fills the space behind it with a frosted-glass treatment. Use arrow keys to navigate and Escape to close. Entries are illustrative creative writing.
+![The Wandering Soul — A little lost. A lot alive.](public/social-preview.jpg)
 
-The ending presents three sealed clues. Revealing a clue opens its destination and Lucide icon; choosing “Make this the next chapter” bookmarks the destination locally. Revealing alone does not change the saved choice. Only one clue is open at a time, and the page returns to its suspenseful sealed state on reload.
+## The experience
 
-Little World includes three local views for each of the four destinations (12 total), with nearby views prefetched. Optimized WebP previews and small thumbnails reduce image transfer size while retaining the PNG originals. Smaller scene previews are served on phones. The phone layout includes a sticky navigation bar, safe-area spacing, a tilted two-column postcard grid, a full-screen photo viewer with sticky close controls, photo swipe navigation, larger touch targets, and compact layouts for small screens. Scene progress uses the actual pinned viewport height to avoid jumping when browser chrome changes height.
+- **Aniket’s Little World:** scroll through 12 scenic views across Mumbai, Jaisalmer, Kedarnath, and an imagined Karakoram dream chapter. Slow zoom, camera drift, and transitions create movement from local images; this is not generated video.
+- **Wish you were here:** tilted postcard covers open on the exact image clicked, followed by three photo-story moments for each destination. Photos remain uncropped, with a frosted, blurred version of the image filling the background.
+- **Through my eyes:** every moment pairs “What I saw” with “How it felt.” Browse with thumbnails, arrow buttons, keyboard arrows, or a horizontal swipe. Escape closes the viewer.
+- **The unwritten chapter:** a cinematic destination explorer reveals Spiti Valley, Kerala, or Meghalaya through three feelings: a little higher, a little slower, or a little wilder. Visitors can leave a pin for the next adventure.
+- **Made for phones:** compact headings, sticky navigation, full-screen photo stories, safe-area spacing, and touch-friendly controls. Reduced-motion preferences are respected.
+- **Ready to share:** a branded WhatsApp/Open Graph cover, sharing text, Chrome tab icons, and home-screen icons.
 
-## Run
+The journal blends real places with illustrative personal writing. AI-created scenes are imagined views, not records of completed trips. K2 remains a dream chapter, not a summit claim.
 
-Install Node.js, then run `npm install` and `npm run dev`. Create a production build with `npm run build`.
+## Run locally
 
-## Content
+Use **Node.js 24.x** and npm. Install the locked dependencies, then start the development server:
 
-The narrative follows Mumbai, Jaisalmer, Kedarnath, and a K2 dream chapter. Personal travel moments are illustrative; no completed expedition is claimed. Destination choices are saved only in the visitor's browser using localStorage, without a shared vote database.
+```sh
+npm ci
+npm run dev
+```
 
-## Images
+Build and inspect the production version:
 
-All images are local files in `public/images`, with PNG originals and optimized WebP display versions.
+```sh
+npm run build
+npm run preview
+```
 
-- `mountains.png`: AI-generated artistic composite of desert and mountain scenery; not a documentary image of K2.
-- `jaisalmer.png`: AI-generated illustrative Jaisalmer scene.
-- `mumbai.png`: photograph by Prado on Unsplash, https://unsplash.com/photos/people-walking-on-arch-gate-during-daytime-5EI5JYMSvj8 ; downloaded from https://images.unsplash.com/photo-1598434192043-71111c1b3f41 and converted to PNG.
-- `kedarnath.png`: Unsplash destination photograph, https://images.unsplash.com/photo-1712733900711-d0b929d0d7cc ; discovered through https://unsplash.com/s/photos/kedarnath and converted to PNG.
-- `mumbai-evening.png`, `jaisalmer-dunes.png`, `kedarnath-valley.png`, and `karakoram-dream.png`: AI-generated editorial landscape illustrations created for this project. These are imagined scenes, not documentary records of Aniket's trips.
-- `mumbai-chai.png`, `jaisalmer-lake.png`, `kedarnath-bells.png`, and `karakoram-stars.png`: additional AI-generated detail and landscape moments. WebP, mobile WebP, and thumbnail derivatives accompany the PNG originals.
+`npm run build` also runs the production checker. It verifies the app entry point, sharing metadata, filename casing, image files, photo-story data, browser icons, and Vercel output configuration. Run the checker again against an existing build with `npm run check`.
 
-Google Fonts provide Manrope, DM Sans, and Caveat; system fallback fonts work when offline. Icons are from Lucide. The layout supports mobile screens and reduced-motion preferences.
+## Deploy on Vercel
+
+Import this repository and use its root directory. The included `vercel.json` supplies the deployment settings:
+
+| Setting | Value |
+| --- | --- |
+| Framework | Vite |
+| Node.js | 24.x |
+| Install command | `npm ci --include=dev` |
+| Build command | `npm run build` |
+| Output directory | `dist` |
+
+No API keys, database, or paid video service are required. Destination pins are saved only in the visitor’s browser with `localStorage`.
+
+Include `src/`, `public/`, `scripts/`, `index.html`, `package.json`, `package-lock.json`, `vite.config.js`, and `vercel.json`. Local dependencies, verification folders, ZIP exports, and old hosting metadata are excluded from Vercel uploads by `.vercelignore`.
+
+SPA rewrites support direct requests. The travel chapters use fragment links such as `/#jaisalmer`. After deployment, check the live site and its public image URLs.
+
+## WhatsApp previews and browser icons
+
+The default production URL is **https://the-wandering-soul.vercel.app**.
+
+`index.html` includes sharing metadata in the initial HTML, so link-preview crawlers do not need to execute React. The cover is `public/social-preview.jpg`, a 1200 × 630 JPEG. SVG, ICO, PNG, and Apple touch icons are also included.
+
+`vite.config.js` chooses the public origin in this order:
+
+1. `SITE_URL`, if you set it for a custom domain.
+2. `VERCEL_PROJECT_PRODUCTION_URL`.
+3. `VERCEL_URL`.
+4. The default production URL above.
+
+For a new custom domain, set `SITE_URL` and redeploy. The sharing image must be public. WhatsApp and browsers can temporarily retain older previews or favicons after an update. See [Vercel’s production-domain variable](https://vercel.com/docs/environment-variables/system-environment-variables#vercel_project_production_url).
+
+## Project structure
+
+```text
+src/
+  main.jsx             Page layout and postcard collection
+  ScrollJourney.jsx    Scroll progress and chapter copy
+  PhotoWorld.jsx       Canvas-based scenic animation
+  MemoryGallery.jsx    Accessible full-image photo-story viewer
+  memories.js          Photo captions and journal passages
+  HorizonEnding.jsx    Destination explorer and local pinning
+public/
+  images/              Local photos and optimized scene images
+  social-preview.jpg   Sharing cover
+  favicon.*            Browser tab logo
+scripts/
+  verify-build.mjs     Production validation
+vite.config.js         Public URL and sharing metadata substitution
+vercel.json            Vercel deployment configuration
+```
+
+## Images and credits
+
+All runtime travel images are served locally. PNG originals accompany the journal images, with optimized WebP, phone, and thumbnail versions to reduce downloads. Upcoming destination artwork is supplied as WebP.
+
+- **Mumbai Gateway photograph:** [Prado on Unsplash](https://unsplash.com/photos/people-walking-on-arch-gate-during-daytime-5EI5JYMSvj8), converted to PNG and WebP.
+- **Kedarnath photograph:** [Unsplash destination collection](https://unsplash.com/s/photos/kedarnath), source image `photo-1712733900711-d0b929d0d7cc`, converted to PNG and WebP.
+- **Other scenic, detail, future-destination, and sharing artwork:** AI-created illustrations for this portfolio. These are not documentary records of Aniket’s travels.
+- **Typography:** Manrope, DM Sans, and Caveat from Google Fonts, with system-font fallbacks.
+- **Icons:** Lucide.
+
+Built with React, Vite, CSS, and Canvas.

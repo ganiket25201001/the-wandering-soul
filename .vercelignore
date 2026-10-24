@@ -1,0 +1,12 @@
+node_modules
+dist
+.git
+.openai
+.agents
+.codex
+*.log
+*.zip
+pnpm-lock.yaml
+pnpm-workspace.yaml
+.vercel-check
+.vercel-check-clean

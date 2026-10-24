@@ -6,7 +6,7 @@ import ScrollJourney from './ScrollJourney';
 import MemoryGallery from './MemoryGallery';
 import {memories} from './memories';
 import './mobile.css';
-import MysteryEnding from './MysteryEnding';
+import MysteryEnding from './HorizonEnding';
 import './compact.css';
 
 const chapters = [
