@@ -1,7 +1,6 @@
 import React,{useEffect,useRef} from 'react';
 
-const scenes=['/images/mumbai-evening.png','/images/jaisalmer-dunes.png','/images/kedarnath-valley.png','/images/karakoram-dream.png'];
-const fallback=['/images/mumbai.png','/images/jaisalmer.png','/images/kedarnath.png','/images/mountains.png'];
+const scenes=['mumbai-evening','mumbai','mumbai-chai','jaisalmer','jaisalmer-dunes','jaisalmer-lake','kedarnath-valley','kedarnath','kedarnath-bells','karakoram-dream','mountains','karakoram-stars'];
 const clamp=n=>Math.max(0,Math.min(1,n));
 const smooth=n=>{const t=clamp(n);return t*t*(3-2*t)};
 
@@ -12,7 +11,10 @@ export default function PhotoWorld({progress,paused}){
  useEffect(()=>{
   const el=canvas.current,ctx=el.getContext('2d');if(!ctx)return;
   let width=0,height=0,current=target.current,raf=0,inView=false,lastPaint=-1,dirty=true;
-  const images=scenes.map((src,i)=>{const image=new Image();image.onload=()=>{dirty=true};image.onerror=()=>{if(!image.src.endsWith(fallback[i]))image.src=fallback[i]};image.src=src;return image});
+  const compact=matchMedia('(max-width:760px)').matches;
+  const images=scenes.map((name)=>{const image=new Image();image.onload=()=>{dirty=true};image.onerror=()=>{const fallback='/images/'+name+'.png';if(!image.src.endsWith(fallback))image.src=fallback};return image});
+  const loadNearby=index=>{for(let n=Math.max(0,index-1);n<=Math.min(scenes.length-1,index+2);n++)if(!images[n].src)images[n].src='/images/'+scenes[n]+(compact?'.mobile.webp':'.webp')};
+  loadNearby(Math.min(scenes.length-1,Math.floor(target.current*scenes.length)));
   const resize=()=>{const r=el.getBoundingClientRect();width=r.width;height=r.height;const ratio=Math.min(devicePixelRatio||1,2);el.width=Math.round(width*ratio);el.height=Math.round(height*ratio);ctx.setTransform(ratio,0,0,ratio,0,0);dirty=true};
   const observer=new ResizeObserver(resize);observer.observe(el);resize();
   const visibility=new IntersectionObserver(([entry])=>{inView=entry.isIntersecting;dirty=true});visibility.observe(el);
@@ -27,7 +29,8 @@ export default function PhotoWorld({progress,paused}){
    raf=requestAnimationFrame(paint);if(!inView||document.hidden)return;
    if(!freeze.current)current+=(target.current-current)*.075;
    if(!dirty&&Math.abs(current-lastPaint)<.00003)return;lastPaint=current;dirty=false;
-   const p=clamp(current)*4,i=Math.min(3,Math.floor(p)),phase=Math.min(1,p-i),blend=i<3?smooth((phase-.72)/.28):0;
+   const p=clamp(current)*scenes.length,i=Math.min(scenes.length-1,Math.floor(p)),phase=Math.min(1,p-i),blend=i<scenes.length-1?smooth((phase-.72)/.28):0;
+   loadNearby(i);
    ctx.globalAlpha=1;ctx.fillStyle='#d9dfd0';ctx.fillRect(0,0,width,height);
    drawImage(images[i],phase,1);if(blend>0)drawImage(images[i+1],0,blend);
    ctx.globalAlpha=1;

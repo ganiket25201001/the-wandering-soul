@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {ArrowDown, ArrowUpRight, Pause, Play} from 'lucide-react';
+import {ArrowDown, ArrowUpRight, Pause, Play, Camera} from 'lucide-react';
 import './journey.css';
 import PhotoWorld from './PhotoWorld';
 
@@ -12,15 +12,15 @@ const descriptions=[
 ];
 
 export default function ScrollJourney({chapters,onEntry}){
- const container=useRef(null);const [progress,setProgress]=useState(0),[paused,setPaused]=useState(false);
- useEffect(()=>{let scheduled=0;const update=()=>{scheduled=0;const r=container.current.getBoundingClientRect();setProgress(clamp(-r.top/(r.height-innerHeight)))};const onScroll=()=>{if(!scheduled)scheduled=requestAnimationFrame(update)};window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll);update();return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll);cancelAnimationFrame(scheduled)}},[]);
+ const container=useRef(null),stage=useRef(null);const [progress,setProgress]=useState(0),[paused,setPaused]=useState(false);
+ useEffect(()=>{let scheduled=0;const update=()=>{scheduled=0;const r=container.current.getBoundingClientRect(),frame=stage.current;const stickyTop=parseFloat(getComputedStyle(frame).top)||0;setProgress(clamp((stickyTop-r.top)/(r.height-frame.offsetHeight)))};const onScroll=()=>{if(!scheduled)scheduled=requestAnimationFrame(update)};window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll);update();return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll);cancelAnimationFrame(scheduled)}},[]);
  const index=Math.min(3,Math.floor(progress*4)),chapter=chapters[index];
  return <section className="scroll-world" ref={container} aria-label="The continuous travel walkthrough">
-  {chapters.map((c,i)=><div key={c.id} id={c.id} className="world-anchor" style={{top:`${i*25}%`}}/>)}
-  <div className="world-stage"><PhotoWorld progress={progress} paused={paused}/><div className="world-scrim"/>
+  {chapters.map((c,i)=><div key={c.id} id={c.id} className="world-anchor" style={{top:`calc(${i*25}% - ${i/4} * var(--world-frame-height, 100svh))`}}/>)}
+  <div className="world-stage" ref={stage}><PhotoWorld progress={progress} paused={paused}/><div className="world-scrim"/>
    <div className="world-topline"><span><span className="status-dot"/> ANIKET’S LITTLE WORLD</span><button onClick={()=>setPaused(!paused)} aria-pressed={paused}>{paused?<Play size={13}/>:<Pause size={13}/>} {paused?'Resume motion':'Pause motion'}</button></div>
    <div className="world-copy" key={chapter.id}><span className="eyebrow">{chapter.no} / 04 <span className="dash"/> {chapter.name.toUpperCase()}</span><h2>{descriptions[index][0]}<br/><em>{descriptions[index][1]}</em></h2><p>{descriptions[index][2]}</p><button className="text-button" onClick={()=>onEntry(chapter)}>Read this page <ArrowUpRight size={16}/></button><span className="world-chapter-note scribble">{chapter.note}</span></div>
-   <div className="world-postcard"><span className="world-postcard-tape"/><img src={chapter.image} alt={chapter.alt}/><span className="scribble">{chapter.name} ♡</span></div>
+   <div className="world-view-counter"><Camera size={13}/><span>VIEW {Math.min(2,Math.floor((progress*4-index)*3))+1} OF 3</span><span className="world-view-dots">{[0,1,2].map(i=><span key={i} className={i===Math.min(2,Math.floor((progress*4-index)*3))?'current':''}/>)}</span></div>
    <div className="world-bottom"><span className="world-scroll-hint"><ArrowDown size={15}/> SCROLL TO KEEP TRAVELLING</span><div className="world-route" aria-label="Walkthrough destinations">{chapters.map((c,i)=><a key={c.id} href={'#'+c.id} className={i===index?'current':''} aria-current={i===index?'step':undefined}><span>{c.no}</span>{c.name}</a>)}</div><span className="world-distance">{Math.round(progress*100)}% <span>OF THIS STORY</span></span></div>
   </div>
  </section>
