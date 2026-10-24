@@ -7,6 +7,7 @@ import MemoryGallery from './MemoryGallery';
 import {memories} from './memories';
 import './mobile.css';
 import MysteryEnding from './MysteryEnding';
+import './compact.css';
 
 const chapters = [
  {id:'mumbai',no:'01',name:'Mumbai',tag:'WHERE IT ALL BEGINS',title:'Every adventure starts\nwith a goodbye.',text:'The city taught me to keep moving. The local trains, the sea breeze, the beautiful chaos. But somewhere between the last train and the first chai, a question found me: what’s beyond the familiar?',note:'One backpack. A window seat. A brave little yes.',image:'/images/mumbai.png',alt:'The Gateway of India beside the water in Mumbai',color:'blue',meta:'The beginning · Maharashtra',entry:'Dear journal, I’m leaving the city I call home. Not because I have all the answers. Because I finally have a question worth following.'},
